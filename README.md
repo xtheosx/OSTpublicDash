@@ -1,5 +1,5 @@
-# OSTpublicDash
-Public Dashboard butil on bootstrap to show closed tickets open tickets etc.
+# osTicket public Dashboard
+Public Dashboard butilt on bootstrap to show closed tickets open tickets etc.
 
 This is a dashboard for osTicket displaying how many closed tickets there are, current amount of open tickets,
 and a simple count down timer (pratically done manually) for the days left in the school year. It is easly customizable.
