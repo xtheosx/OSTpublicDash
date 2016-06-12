@@ -174,25 +174,23 @@ $hours_remaining = floor(($remaining % 86400) / 3600);
             <table class="table table-striped">
                  <tr>
                    <th>Ticket Number</th>
+                   <th>User</th>
                    <th>Tech Assigned</th>
                    <th>Location</th>
-                   <th>User</th>
-                   <th>Status</th>
+
                   </tr>
                     <tr>
-                   <td><?php echo $ticket;?></td>
-                   <td><?php echo $user1;?></td>
-                   <td>Rocky River</td>
+                   <td>T-001</td>
                    <td>Jenna Cook</td>
-                   <td>Open</td>
+                   <td>Tech Assigned></td>
+                   <td>Rocky River</td>
                 </tr>
 
                 <tr>
                    <td>T-002</td>
-                   <td>astarnes</td>
-                   <td>South Elementary</td>
-                   <td>Laurnen Pollock</td>
-                   <td>Open</td>
+                   <td>Lauren</td>
+                   <td>Adam</td>
+                   <td>South</td>
                 </tr>
             </table>
   			</div>
@@ -217,4 +215,3 @@ $hours_remaining = floor(($remaining % 86400) / 3600);
   <!--container end-->
 </div>
 </body>
-
