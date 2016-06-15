@@ -19,11 +19,14 @@
     See osTickets's LICENSE.TXT for details.
 **********************************************************************/
 
-
+// needed for 1.8+ for now until we tie this back into the built in DB query
+$username="USER";
+$password="PASSWORD";
+$database="DATABASE";
 
 
 //change USER / PW/ DB here and in php below in lines 226,227,228
-$mysqli = new mysqli("localhost", "USER", "PASSWORD", "DATABASE");
+$mysqli = new mysqli("localhost", $username, $password, $database);
 $totalcomplete = $mysqli->query("SELECT COUNT(`status_id`) AS number FROM ost_ticket")->fetch_object()->number;
 $usernumber = $mysqli->query("SELECT COUNT(`id`) AS number FROM ost_user_account")->Fetch_object()->number;
 $opencount = $mysqli ->query("SELECT COUNT(`status_id`) AS number FROM ost_ticket WHERE `status_id` = 1")->fetch_object()->number;
@@ -221,11 +224,6 @@ $hours_remaining = floor(($remaining % 86400) / 3600);
                   if (null !== TABLE_PREFIX) {
                    define('TABLE_PREFIX','ost_');
                   }
-
-                  // needed for 1.8+ for now until we tie this back into the built in DB query
-                  $username="USER";
-                  $password="PASSWORD";
-                  $database="DATABASE";
 
                   mysql_connect('localhost',$username,$password) or die(mysql_error());
                   @mysql_select_db($database) or die( "Unable to select database");
