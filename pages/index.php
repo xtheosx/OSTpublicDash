@@ -19,7 +19,7 @@
     See osTickets's LICENSE.TXT for details.
 **********************************************************************/
 
-// EDIT THIS!  
+// EDIT THIS!
 // needed for 1.8+ for now until we tie this back into the built in DB query
 $username="USER";
 $password="PASSWORD";
@@ -283,6 +283,7 @@ $status = 'status_id';
                   $topic  = mysql_result($result,$i,"topic_id");
                   $name = mysql_result($result,$i,"name");
                   $assignee = mysql_result($result,$i,"assignee");
+                  $location = mysql_result($result,$i,"location");
                   // additional variables you might want
                   //$agency = mysql_result($result,$i,"agency");
 
@@ -313,31 +314,19 @@ $status = 'status_id';
                    $nameresult = mysql_query($namesql);
                    $name = mysql_result($nameresult,0,"name");
 
-  		   // get location
-                   $locationsql = "SELECT value FROM ".TABLE_PREFIX."form_entry_values WHERE entry_id=$entry_id and field_id=12";
-                   $locationresult = mysql_query($locationsql);
-                   $location = mysql_result($locationresult,0,"value");
-                   if(is_null(location)) {
-                     $location = 'N/A';
-                   }   
-                   // sanitize location data
-                   if($location[0]=='{') {
-                     // osTicket 1.10 data format
-                     $location = trim($location, "{");
-                     $location = trim($location, "}");
-                     $loc = explode(':', $location);
-                     $loc[1] = trim($loc[1],'"');
-                   }
-                   else {
-                     // osticket pre 1.10 data format
-                     $loc[1] = $location;
-                   }
+                   // get location as entered by end user. In our case we have each school set as a location when the ticket is submitted.
+                     $locationnumbersql = "SELECT location FROM ".TABLE_PREFIX."ticket__cdata WHERE ticket_id=$ticket_id";
+                     $locationnumberresult = mysql_query($locationnumbersql);
+                     $locationnumber = mysql_result($locationnumberresult,0,"location");
+                     $locationsql = "SELECT value FROM ".TABLE_PREFIX."list_items WHERE id=$locationnumber";
+                     $locationresult = mysql_query($locationsql);
+                     $location = mysql_result($locationresult,0,"value");
 
                    echo "<tr><td> &nbsp; $number &nbsp; </td>"
                            ."<td> &nbsp; $name &nbsp; </td>"
                            ."<td> &nbsp; $topic &nbsp; </td>"
-                           ."<td> &nbsp; $loc[1] &nbsp; </td>"
-                           ."<td> $assignee </td></tr>";
+                           ."<td> &nbsp; $assignee &nbsp; </td>"
+                           ."<td> $location </td></tr>";
 
                   ++$i;
 
