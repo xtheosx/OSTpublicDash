@@ -210,6 +210,7 @@ $status = 'status_id';
                    <th>Ticket Number</th>
                    <th>Name</th>
                    <th>Issue</th>
+                   <th>Location</th>
                    <th>Assigned Tech</th>
                   </tr>
                   <?php
@@ -221,10 +222,8 @@ $status = 'status_id';
 
                   mysql_connect('localhost',$username,$password) or die(mysql_error());
                   @mysql_select_db($database) or die( "Unable to select database");
-                  // end 1.8+ fix for now
 
                   if($multiple) {
-
                    // The columns that you want to collect data for from the db
                    // Please note that due to db structure changes in 1.8.x you can only include columns from the ost_ticket table
                    // and this script does not handle custom fields at this time.
@@ -314,11 +313,30 @@ $status = 'status_id';
                    $nameresult = mysql_query($namesql);
                    $name = mysql_result($nameresult,0,"name");
 
-
+  		   // get location
+                   $locationsql = "SELECT value FROM ".TABLE_PREFIX."form_entry_values WHERE entry_id=$entry_id and field_id=12";
+                   $locationresult = mysql_query($locationsql);
+                   $location = mysql_result($locationresult,0,"value");
+                   if(is_null(location)) {
+                     $location = 'N/A';
+                   }   
+                   // sanitize location data
+                   if($location[0]=='{') {
+                     // osTicket 1.10 data format
+                     $location = trim($location, "{");
+                     $location = trim($location, "}");
+                     $loc = explode(':', $location);
+                     $loc[1] = trim($loc[1],'"');
+                   }
+                   else {
+                     // osticket pre 1.10 data format
+                     $loc[1] = $location;
+                   }
 
                    echo "<tr><td> &nbsp; $number &nbsp; </td>"
                            ."<td> &nbsp; $name &nbsp; </td>"
                            ."<td> &nbsp; $topic &nbsp; </td>"
+                           ."<td> &nbsp; $loc[1] &nbsp; </td>"
                            ."<td> $assignee </td></tr>";
 
                   ++$i;
