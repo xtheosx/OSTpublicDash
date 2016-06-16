@@ -19,11 +19,11 @@
     See osTickets's LICENSE.TXT for details.
 **********************************************************************/
 
+// EDIT THIS!  
 // needed for 1.8+ for now until we tie this back into the built in DB query
 $username="USER";
 $password="PASSWORD";
 $database="DATABASE";
-
 
 //change USER / PW/ DB here and in php below in lines 226,227,228
 $mysqli = new mysqli("localhost", $username, $password, $database);
@@ -32,7 +32,6 @@ $totalresolved = $mysqli->query("SELECT COUNT(`status_id`) AS number FROM `ost_t
 $usernumber = $mysqli->query("SELECT COUNT(`id`) AS number FROM ost_user_account")->Fetch_object()->number;
 $opencount = $mysqli ->query("SELECT COUNT(`status_id`) AS number FROM ost_ticket WHERE `status_id` = 1")->fetch_object()->number;
 $totalcomplete = $totalclosed + $totalresolved;
-
 
 $late = 6;
 $total = 180;
@@ -43,16 +42,27 @@ $remaining = $date - time();
 $days_remaining = floor($remaining / 86400);
 $hours_remaining = floor(($remaining % 86400) / 3600);
 
+// The maximum amount of open tickets that you want to display.
+$limit ='10';
 
+// OPTIONAL: if you know the id for Open in your database put it here.  If you do not you can look
+// it up in DBPREFIX_ticktet_status, or this script will look it up for you.  This is 1 in all my installations.
+// changing this to a number will save you a SQL query. If you are running 1.8 or prior change this to "open".
+// NOTE: Backwards compatibility has not been tested.
+$openid = '1';
+
+// OPTIONAL: if you use multiple 'open' statuses and would like them ALL to be displayed set this to 1.  Example:
+// We use a Pending status which is a type of open.  Setting this to 1 displays Open and Pending.
+$multiple = '1';
+
+// If you are running 1.8 or prior change this to "status".  If you are running 1.9 or 1.10 change this to "status_id"
+// NOTE: Backwards compatibility has not been tested.
+$status = 'status_id';
 
 ?>
-
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -66,7 +76,6 @@ $hours_remaining = floor(($remaining % 86400) / 3600);
 
     <!-- Bootstrap Core CSS -->
     <link href="../bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
-
 
     <!-- Custom CSS -->
     <link href="../dist/css/sb-admin-2.css" rel="stylesheet">
@@ -204,22 +213,6 @@ $hours_remaining = floor(($remaining % 86400) / 3600);
                    <th>Assigned Tech</th>
                   </tr>
                   <?php
-                   // EDIT THIS!  The maximum amount of open tickets that you want to display.
-                  $limit ='10';
-
-                  // OPTIONAL: if you know the id for Open in your database put it here.  If you do not you can look
-                  // it up in DBPREFIX_ticktet_status, or this script will look it up for you.  This is 1 in all my installations.
-                  // changing this to a number will save you a SQL query. If you are running 1.8 or prior change this to "open".
-                  // NOTE: Backwards compatibility has not been tested.
-                  $openid = '1';
-
-                  // OPTIONAL: if you use multiple 'open' statuses and would like them ALL to be displayed set this to 1.  Example:
-                  // We use a Pending status which is a type of open.  Setting this to 1 displays Open and Pending.
-                  $multiple = '1';
-
-                  // If you are running 1.8 or prior change this to "status".  If you are running 1.9 or 1.10 change this to "status_id"
-                  // NOTE: Backwards compatibility has not been tested.
-                  $status = 'status_id';
 
                   // OPTIONAL:
                   if (null !== TABLE_PREFIX) {
