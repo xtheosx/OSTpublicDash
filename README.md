@@ -1,7 +1,7 @@
 # osTicket public Dashboard
 Public Dashboard butilt on bootstrap and the SB-ADMIN-2 template to show closed tickets open tickets etc.
 
-See it here: https://techhelp.mgsd.k12.nc.us/tech/pages
+See it here: https://techhelp.mgsd.k12.nc.us/dashboard
 
 This is a dashboard for osTicket displaying how many closed tickets there are, current amount of open tickets,
 and a simple count down timer (pratically done manually) for the days left in the school year. It is easly customizable.
